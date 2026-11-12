@@ -428,7 +428,7 @@
         </div>
         <span class="header-brand">NEXTGEN DIGITAL</span>
       </div>
-      <a href="https://t.me/nextgendigitalcharttools" target="_blank" rel="noopener noreferrer" class="header-cta" aria-label="Join Telegram">
+      <a href="https://t.me/nextgendigitalcharttools" target="_blank" rel="noopener noreferrer" class="header-cta" id="header-telegram-btn" aria-label="Join Telegram">
         JOIN TELEGRAM
       </a>
     </header>
@@ -590,12 +590,14 @@
   <!-- Meta Pixel Event Tracking -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      var telegramBtn = document.getElementById('join-telegram-btn');
-      if (!telegramBtn) return;
+      var telegramButtons = [
+        document.getElementById('join-telegram-btn'),
+        document.getElementById('header-telegram-btn')
+      ];
 
       var isFired = false;
 
-      telegramBtn.addEventListener('click', function () {
+      function handleTelegramClick() {
         if (isFired) return;
         isFired = true;
 
@@ -606,6 +608,12 @@
         setTimeout(function () {
           isFired = false;
         }, 1500);
+      }
+
+      telegramButtons.forEach(function (btn) {
+        if (btn) {
+          btn.addEventListener('click', handleTelegramClick);
+        }
       });
     });
   </script>
