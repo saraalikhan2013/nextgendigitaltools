@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NextGen Digital | Stock Market Learning & Trading Insights</title>
+  <meta name="description" content="Join Nextgendigital Chart Scanner 📈 for stock market learning, chart analysis, trading knowledge, and regular market education." />
+  <meta name="theme-color" content="#050807" />
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #050807;
+      color: #dce5df;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection { background: rgba(34, 197, 94, 0.3); color: #fff; }
+
+    /* ===== BACKGROUND LAYER ===== */
+    .bg-layer {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(34, 197, 94, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 197, 94, 0.035) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, black 15%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, black 15%, transparent 100%);
+    }
+    .bg-glow-1 {
+      position: absolute; top: -12%; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 500px;
+      background: radial-gradient(ellipse, rgba(34, 197, 94, 0.06) 0%, transparent 70%);
+    }
+    .bg-glow-2 {
+      position: absolute; bottom: 5%; right: -10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.025) 0%, transparent 70%);
+    }
+
+    /* ===== PAGE WRAPPER ===== */
+    .page-wrapper {
+      position: relative; z-index: 1;
+      max-width: 480px; margin: 0 auto; padding: 0 20px;
+    }
+    @media (min-width: 768px) { .page-wrapper { max-width: 560px; padding: 0 28px; } }
+    @media (min-width: 1024px) { .page-wrapper { max-width: 600px; } }
+
+    /* ===== HEADER ===== */
+    .site-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0;
+    }
+    .header-left {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .header-logo {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: #0a0a0a; border: 1.5px solid rgba(34, 197, 94, 0.25);
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.08);
+      flex-shrink: 0;
+    }
+    .header-logo img {
+      width: 75%; height: 75%; object-fit: contain;
+    }
+    .header-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px; font-weight: 700; color: #e0e8e3;
+      letter-spacing: 0.5px;
+    }
+    .header-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 18px;
+      background: #22c55e; color: #052e16;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+      text-decoration: none; border-radius: 24px;
+      transition: all 0.25s ease; white-space: nowrap;
+      box-shadow: 0 2px 12px rgba(34, 197, 94, 0.3);
+    }
+    .header-cta:hover {
+      background: #4ade80; transform: translateY(-1px);
+      box-shadow: 0 4px 18px rgba(34, 197, 94, 0.4);
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      margin-top: 12px;
+      padding: 40px 24px 44px;
+      background: linear-gradient(175deg, rgba(10, 22, 14, 0.92) 0%, rgba(6, 12, 8, 0.96) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.1);
+      border-radius: 24px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.3), transparent);
+    }
+    .hero-grid-inner {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(34, 197, 94, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 197, 94, 0.02) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+
+    /* Headline */
+    .hero-headline {
+      position: relative; z-index: 1;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 38px; font-weight: 700; line-height: 1.12;
+      color: #ffffff; margin-bottom: 24px;
+    }
+    .hero-headline .green {
+      color: #4ade80;
+    }
+
+    /* Logo */
+    .hero-logo-wrap {
+      position: relative; z-index: 1;
+      width: 110px; height: 110px;
+      margin: 0 auto 24px;
+    }
+    .hero-logo-circle {
+      width: 110px; height: 110px; border-radius: 50%;
+      background: #0a0a0a;
+      border: 2px solid rgba(34, 197, 94, 0.25);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 0 28px rgba(34, 197, 94, 0.1), 0 0 56px rgba(34, 197, 94, 0.04);
+    }
+    .hero-logo-circle img {
+      width: 76%; height: 76%; object-fit: contain;
+    }
+    .hero-logo-glow-ring {
+      position: absolute; inset: -5px; border-radius: 50%;
+      border: 1px solid rgba(34, 197, 94, 0.1);
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.06);
+      pointer-events: none;
+    }
+
+    /* Description */
+    .hero-desc {
+      position: relative; z-index: 1;
+      font-size: 14px; color: #94a89b; line-height: 1.8;
+      max-width: 400px; margin: 0 auto 28px;
+    }
+
+    /* ===== FEATURE BADGES ===== */
+    .badges-wrap {
+      position: relative; z-index: 1;
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 10px; margin-bottom: 32px;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px;
+      background: rgba(20, 24, 22, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 28px;
+      font-size: 12px; font-weight: 500; color: #d0dbd4;
+      white-space: nowrap;
+      transition: border-color 0.25s ease;
+    }
+    .badge:hover {
+      border-color: rgba(34, 197, 94, 0.25);
+    }
+    .badge-check {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: rgba(34, 197, 94, 0.15);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .badge-check svg {
+      width: 10px; height: 10px; color: #4ade80;
+    }
+
+    /* ===== CTA BUTTONS ===== */
+    .cta-group {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 12px;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+      width: 100%; max-width: 400px;
+      padding: 18px 32px;
+      background: #22c55e; color: #052e16;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px; font-weight: 700;
+      text-decoration: none; border-radius: 14px;
+      border: none; cursor: pointer;
+      position: relative; overflow: hidden;
+      box-shadow:
+        0 4px 24px rgba(34, 197, 94, 0.35),
+        0 10px 48px rgba(34, 197, 94, 0.12);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-primary:hover {
+      background: #4ade80;
+      transform: translateY(-2px);
+      box-shadow:
+        0 6px 32px rgba(34, 197, 94, 0.45),
+        0 14px 56px rgba(34, 197, 94, 0.18);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary::after {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: linear-gradient(45deg, transparent 42%, rgba(255,255,255,0.07) 50%, transparent 58%);
+      animation: sheen 3.5s ease-in-out infinite;
+    }
+    @keyframes sheen {
+      0%, 100% { transform: translateX(-100%); }
+      50% { transform: translateX(100%); }
+    }
+    .btn-primary svg { flex-shrink: 0; }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 100%; max-width: 400px;
+      padding: 16px 32px;
+      background: transparent;
+      color: #e0e8e3;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px; font-weight: 600;
+      text-decoration: none; border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(34, 197, 94, 0.3);
+      background: rgba(34, 197, 94, 0.04);
+      transform: translateY(-1px);
+    }
+
+    .cta-sub {
+      margin-top: 4px;
+      font-size: 12px; color: #5a7565; font-weight: 400;
+    }
+
+    /* ===== PRODUCT / COMMUNITY SECTION ===== */
+    .product-section {
+      margin-top: 36px;
+    }
+    .product-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px; font-weight: 700; color: #fff;
+      text-align: center; line-height: 1.3;
+      margin-bottom: 20px;
+    }
+
+    .product-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .product-card {
+      background: rgba(10, 20, 14, 0.7);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(34, 197, 94, 0.08);
+      border-radius: 18px; padding: 22px 16px;
+      position: relative; overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .product-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.1), transparent);
+    }
+    .product-card:hover {
+      border-color: rgba(34, 197, 94, 0.22);
+      background: rgba(12, 28, 18, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(34, 197, 94, 0.06);
+    }
+
+    .product-card-icon {
+      width: 40px; height: 40px;
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.12);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .product-card-icon svg {
+      width: 20px; height: 20px; color: #4ade80;
+    }
+
+    .product-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px; font-weight: 600; color: #d8e3dc;
+      margin-bottom: 6px;
+    }
+    .product-card-desc {
+      font-size: 12px; color: #758a7c; line-height: 1.6;
+    }
+
+    /* ===== COMMUNITY HIGHLIGHTS ===== */
+    .highlights {
+      margin-top: 28px;
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 8px 22px;
+    }
+    .highlight-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 600; letter-spacing: 1.2px;
+      color: #7b9684; text-transform: uppercase;
+    }
+    .highlight-dot {
+      width: 6px; height: 6px; background: #22c55e; border-radius: 50%;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.5); flex-shrink: 0;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: 44px; padding: 28px 0 36px;
+      text-align: center;
+      border-top: 1px solid rgba(34, 197, 94, 0.06);
+    }
+    .footer-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px; font-weight: 700; color: #c8d6ce;
+      margin-bottom: 4px;
+    }
+    .footer-tagline {
+      font-size: 12px; color: #5c7a65; margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+    .footer-disclaimer {
+      font-size: 11px; color: #42594b; line-height: 1.7;
+      max-width: 400px; margin: 0 auto 14px;
+    }
+    .footer-copyright {
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+      color: #2f4137; text-transform: uppercase;
+    }
+
+    /* ===== RESPONSIVE: SMALL MOBILE ===== */
+    @media (max-width: 374px) {
+      .page-wrapper { padding: 0 14px; }
+      .hero { padding: 28px 16px 32px; }
+      .hero-headline { font-size: 30px; }
+      .hero-logo-wrap, .hero-logo-circle { width: 90px; height: 90px; }
+      .btn-primary { font-size: 15px; padding: 16px 24px; }
+      .btn-secondary { font-size: 13px; padding: 14px 24px; }
+      .badge { font-size: 11px; padding: 8px 12px; }
+      .product-card { padding: 18px 12px; }
+      .product-card-title { font-size: 13px; }
+      .product-card-desc { font-size: 11px; }
+      .header-brand { font-size: 12px; }
+      .header-cta { font-size: 10px; padding: 7px 12px; }
+    }
+
+    /* ===== RESPONSIVE: TABLET ===== */
+    @media (min-width: 768px) {
+      .hero { padding: 48px 36px 52px; }
+      .hero-headline { font-size: 46px; }
+      .hero-logo-wrap, .hero-logo-circle { width: 130px; height: 130px; }
+      .hero-desc { font-size: 15px; }
+      .badge { font-size: 13px; padding: 11px 18px; }
+      .product-grid { gap: 16px; }
+      .product-card { padding: 26px 20px; }
+      .product-card-title { font-size: 15px; }
+      .product-card-desc { font-size: 13px; }
+      .product-title { font-size: 26px; }
+    }
+
+    /* ===== RESPONSIVE: DESKTOP ===== */
+    @media (min-width: 1024px) {
+      .page-wrapper { padding: 0; }
+      .hero { padding: 56px 44px 60px; }
+      .hero-headline { font-size: 50px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+  </div>
+
+  <div class="page-wrapper">
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header">
+      <div class="header-left">
+        <div class="header-logo">
+          <img src="logo.jpg" alt="NextGen Digital" />
+        </div>
+        <span class="header-brand">NEXTGEN DIGITAL</span>
+      </div>
+      <a href="https://t.me/nextgendigitalcharttools" target="_blank" rel="noopener noreferrer" class="header-cta" aria-label="Join Telegram">
+        JOIN TELEGRAM
+      </a>
+    </header>
+
+    <main>
+      <!-- ===== HERO ===== -->
+      <section class="hero" aria-label="Hero">
+        <div class="hero-grid-inner" aria-hidden="true"></div>
+
+        <!-- Headline -->
+        <h1 class="hero-headline">
+          Identify Market Trends<br />
+          <span class="green">Before They Start</span>
+        </h1>
+
+        <!-- Logo Circle -->
+        <div class="hero-logo-wrap">
+          <div class="hero-logo-glow-ring" aria-hidden="true"></div>
+          <div class="hero-logo-circle">
+            <img src="logo.jpg" alt="NextGen Digital Logo" loading="eager" />
+          </div>
+        </div>
+
+        <!-- Description -->
+        <p class="hero-desc">
+          NEXTGEN DIGITAL is a stock market learning and chart analysis community designed for traders who want to understand market trends, explore technical analysis, discover interesting stock market opportunities, and improve their trading knowledge. Get regular market learning updates and chart observations directly through Telegram.
+        </p>
+
+        <!-- Feature Badges -->
+        <div class="badges-wrap">
+          <div class="badge">
+            <span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+            Stock Market Learning
+          </div>
+          <div class="badge">
+            <span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+            Chart Analysis &amp; Insights
+          </div>
+          <div class="badge">
+            <span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+            Beginner Friendly
+          </div>
+          <div class="badge">
+            <span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+            Regular Market Updates
+          </div>
+          <div class="badge">
+            <span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+            Trading Knowledge &amp; Discipline
+          </div>
+          <div class="badge">
+            <span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+            Telegram Community Access
+          </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="cta-group">
+          <a href="https://t.me/nextgendigitalcharttools" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Join Free Telegram Group">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            <span>Join Free Telegram Group</span>
+          </a>
+
+          <a href="#learn-more" class="btn-secondary">
+            Explore Market Learning
+          </a>
+
+          <p class="cta-sub">Free to join — No payment required</p>
+        </div>
+      </section>
+
+      <!-- ===== PRODUCT / COMMUNITY SECTION ===== -->
+      <section class="product-section" id="learn-more" aria-label="Community Features">
+        <h2 class="product-title">Everything You Need to Learn &amp; Understand the Market</h2>
+
+        <div class="product-grid">
+          <!-- Card 1 -->
+          <div class="product-card">
+            <div class="product-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+                <path d="M8 7h6"></path><path d="M8 11h4"></path>
+              </svg>
+            </div>
+            <p class="product-card-title">Market Learning</p>
+            <p class="product-card-desc">Educational content and stock market concepts for beginners and developing traders.</p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="product-card">
+            <div class="product-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 2v6"></path><path d="M15 2v2"></path>
+                <path d="M9 16v6"></path><path d="M15 12v10"></path>
+                <rect x="7" y="8" width="4" height="8" rx="1"></rect>
+                <rect x="13" y="4" width="4" height="8" rx="1"></rect>
+              </svg>
+            </div>
+            <p class="product-card-title">Chart Analysis</p>
+            <p class="product-card-desc">Explore technical charts, market structures, price action, and chart observations.</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="product-card">
+            <div class="product-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="6"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+              </svg>
+            </div>
+            <p class="product-card-title">Trading Knowledge</p>
+            <p class="product-card-desc">Learn about trading discipline, technical analysis, and structured market research.</p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="product-card">
+            <div class="product-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+              </svg>
+            </div>
+            <p class="product-card-title">Market Updates</p>
+            <p class="product-card-desc">Regular market learning updates and interesting market observations through Telegram.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Community Highlights -->
+      <section class="highlights" aria-label="Highlights">
+        <div class="highlight-item">
+          <span class="highlight-dot" aria-hidden="true"></span>
+          <span>EDUCATIONAL CONTENT</span>
+        </div>
+        <div class="highlight-item">
+          <span class="highlight-dot" aria-hidden="true"></span>
+          <span>MARKET AWARENESS</span>
+        </div>
+        <div class="highlight-item">
+          <span class="highlight-dot" aria-hidden="true"></span>
+          <span>LEARN AT YOUR PACE</span>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <p class="footer-brand">NEXTGEN DIGITAL</p>
+      <p class="footer-tagline">Learn · Analyse · Grow</p>
+      <p class="footer-disclaimer">
+        Educational content only. Market investments are subject to risk. This community does not guarantee profits or provide personalized investment advice. Please do your own research.
+      </p>
+      <p class="footer-copyright">© 2026 NEXTGEN DIGITAL. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
